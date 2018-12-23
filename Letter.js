@@ -9,10 +9,10 @@ var Letter = function(letter, checker){
 
 Letter.prototype.checkLetter = function(uletter){
     if(this.letter===uletter){
-        console.log("true");
+        console.log(`${uletter} found in word: true`);
         return true;
     }else{
-        console.log("false");
+        console.log(`${uletter} found in word: false`);
         return false;
     }
 };

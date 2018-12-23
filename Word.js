@@ -24,7 +24,7 @@ Word.prototype.createWordArray = function(){
 Word.prototype.checkLArr = function(){
     this.createWordArray();
     for(i=0; i<this.letterArr.length; i++){
-       console.log(this.letterArr[i].checkLetter(letterArr[i].letter)); 
+       this.letterArr[i].checkLetter(this.letterArr[i].letter); 
     }
     
 }
