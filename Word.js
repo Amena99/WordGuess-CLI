@@ -1,35 +1,75 @@
-var inquirer = require("inquirer");
+// var inquirer = require("inquirer");
 var Letter = require("./Letter.js");
 
-function Word(letterArr, word){
-    this.letterArr = letterArr;
+// var newLetterObject;
+//constructors should not have dependency on global scope vars
+
+function Word(word){
     this.word = word;
-}
- 
-Word.prototype.createLetterArray = function(){
-    let wordLetters = this.word.split("");
-    return wordLetters;
-}
+    this.letters = [];
+    
+    //split the word into an array of letters 
+    const wordLetters = this.word.split("");
 
-Word.prototype.createWordArray = function(){
-    for(i =0; i<(this.createLetterArray()).length; i++){
-        let singleLetter= this.createLetterArray()[i];
-        var newLetterObject = new Letter(singleLetter, true);
-        console.log(newLetterObject.letter);
-        this.letterArr.push(newLetterObject);
+    for(let i =0; i<wordLetters.length; i++){
+
+        //iterate through the array of letters to index of each letter
+        const singleLetter= wordLetters[i];
+        
+        //make each letter an instance of the object "Letter" using constructor
+        const newLetterObject = new Letter(singleLetter);
+        
+        //push each "Letter" object into the array this.letters
+        this.letters.push(newLetterObject);
     }
-    console.log(this.letterArr);
 }
 
-Word.prototype.checkLArr = function(){
-    this.createWordArray();
-    for(i=0; i<this.letterArr.length; i++){
-       this.letterArr[i].checkLetter(this.letterArr[i].letter); 
+Word.prototype.guessCheck = function(inputLetter){
+    var verify = false;
+    //iterate through all the "Letter" objects in this.letters and check 
+    //to see if they are correct. Use "Letter" obj method .checkLetter
+    for(i=0; i<this.letters.length; i++){
+
+        //.checkLetter returns true or false for each letter
+       this.letters[i].checkLetter(inputLetter); 
+       
+
+       if (this.letters[i].checkLetter(inputLetter)){
+           verify = true;
+       }
+
+    }
+        return verify;
+}
+
+Word.prototype.displayWord = function(){
+
+    let empString = "";
+    
+    for(i=0; i<this.letters.length; i++){
+    //    empString = empString.concat(this.letters[i].displayLetter() + " ");
+       empString += this.letters[i].displayLetter() + " "
+     }
+     console.log("empString var = " + empString);
+}
+
+Word.prototype.wordComplete = function(){
+    let counter = this.letters.length;
+
+    for (i=0; i<this.letters.length; i++){
+        
+        if (this.letters[i].guessed === true){
+           
+            counter -= 1;
+           
+        }
     }
     
+    return counter;
 }
-var newArr = [];
-var newWord = new Word(newArr, "bike");
-// console.log(newWord.createLetterArray());
-// newWord.createWordArray();
-newWord.checkLArr();
+
+
+// var newWordx = new Word("bubble");
+// console.log(newWordx.wordComplete());
+
+module.exports = Word;

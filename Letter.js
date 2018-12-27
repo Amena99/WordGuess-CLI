@@ -1,43 +1,32 @@
-var inquirer = require("inquirer");
 
-// var letter = "r";
-
-var Letter = function(letter, checker){
+var Letter = function(letter){
     this.letter = letter;
-    this.checker = checker;
+    this.guessed = false;
 }
 
 Letter.prototype.checkLetter = function(uletter){
-    if(this.letter===uletter){
-        console.log(`${uletter} found in word: true`);
-        return true;
-    }else{
-        console.log(`${uletter} found in word: false`);
-        return false;
+    if (this.guessed===false){
+        if(this.letter===uletter){
+            this.guessed = true;
+        }else{
+            this.guessed = false;
+        }
+       
     }
+    return this.guessed;   
 };
 
-Letter.prototype.displayLetter = function(instance, lttr) {
-    if(instance.checkLetter(lttr)){
-        console.log(instance.letter);
-    }else{
-        console.log(" - ");
+Letter.prototype.displayLetter = function() {
+    
+    if(!(this.guessed)){
+        return "_";
     }
+   return this.letter;
 }
 
+    // var newLetter = new Letter("i");
+    // newLetter.checkLetter("q");
+    // console.log(newLetter.displayLetter());
 
-// inquirer.prompt([
-//     {
-//         name: "letter",
-//         message: "What is the letter to look up?",
-//         type: "input"
-//     }
-// ]).then(function(answers){
-//     var newLetter = new Letter("t", true);
-//     console.log(newLetter.letter +"+"+ newLetter.checker);
-//     let inputLetter = answers.letter;
-//     console.log("inputLetter = "+ inputLetter);
-//     newLetter.checkLetter(inputLetter);
-//     newLetter.displayLetter(newLetter, inputLetter);
-// });
+
 module.exports = Letter;
