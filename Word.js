@@ -1,6 +1,6 @@
 // var inquirer = require("inquirer");
 var Letter = require("./Letter.js");
-
+var counter;
 // var newLetterObject;
 //constructors should not have dependency on global scope vars
 
@@ -22,6 +22,7 @@ function Word(word){
         //push each "Letter" object into the array this.letters
         this.letters.push(newLetterObject);
     }
+    this.lettersRem = this.letters.length;
 }
 
 Word.prototype.guessCheck = function(inputLetter){
@@ -29,47 +30,51 @@ Word.prototype.guessCheck = function(inputLetter){
     //iterate through all the "Letter" objects in this.letters and check 
     //to see if they are correct. Use "Letter" obj method .checkLetter
     for(i=0; i<this.letters.length; i++){
-
-        //.checkLetter returns true or false for each letter
-       this.letters[i].checkLetter(inputLetter); 
-       
-
-       if (this.letters[i].checkLetter(inputLetter)){
+    
+    //Note: For the below "IF": We don't want to run the function .checkLetter() on the letters that have 
+    //already been guessed because then .checkLetter() will return the value "true"
+    //for those letters' .guessed property and then this function will always return 
+    //"true". Basically we only want to deal with letters that haven't been guessed.
+    // if (this.letters[i].guessed === false){
+        // console.log("this.letters[i].checkLetter(inputLetter) inside .guessCheck = " + 
+        // this.letters[i].checkLetter(inputLetter));
+        //.checkLetter returns true or false for each letter 
+      
+        // if statement below makes the variable verify = true if inputLetter matches 
+        //atleast one letter in Word object. 
+        if (this.letters[i].checkLetter(inputLetter)){
            verify = true;
        }
-
-    }
-        return verify;
+    // }
+    }    
+    
+    //will return true if input matches at least one letter 
+    return verify;
 }
 
 Word.prototype.displayWord = function(){
 
     let empString = "";
-    
+
     for(i=0; i<this.letters.length; i++){
     //    empString = empString.concat(this.letters[i].displayLetter() + " ");
        empString += this.letters[i].displayLetter() + " "
      }
-     console.log("empString var = " + empString);
+     console.log("\n    " + empString + "\n");
 }
 
 Word.prototype.wordComplete = function(){
-    let counter = this.letters.length;
-
+let counter = 0;
     for (i=0; i<this.letters.length; i++){
-        
-        if (this.letters[i].guessed === true){
-           
-            counter -= 1;
-           
+        if(this.letters[i].guessed === false){
+            counter++;
         }
     }
-    
     return counter;
 }
 
 
 // var newWordx = new Word("bubble");
-// console.log(newWordx.wordComplete());
+// console.log(newWordx.wordComplete("l"));
 
 module.exports = Word;

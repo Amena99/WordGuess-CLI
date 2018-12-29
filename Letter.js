@@ -11,13 +11,11 @@ Letter.prototype.checkLetter = function(uletter){
         }else{
             this.guessed = false;
         }
-       
-    }
-    return this.guessed;   
+    return this.guessed;
+    }     
 };
 
 Letter.prototype.displayLetter = function() {
-    
     if(!(this.guessed)){
         return "_";
     }
